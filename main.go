@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
+	"github.com/pgrunde/invictus/create"
 )
 
 func main() {
@@ -19,6 +20,10 @@ func main() {
 			Usage:   "Create a template.",
 			Action: func(c *cli.Context) {
 				fmt.Println("getting arg", c.Args().First())
+				err := create.Project(c.Args().First())
+				if err != nil {
+					fmt.Println(err)
+				}
 			},
 		},
 	}
