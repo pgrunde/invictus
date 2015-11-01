@@ -11,12 +11,15 @@ var badWindowsNames = []string{"com1", "com2", "com3", "com4", "com5", "com6", "
 
 var badCharacters = []rune{'^', '/', '?', '<', '>', '\\', ':', '*', '|', '"', '.'}
 
-func Project(s string) error {
+func NewProject(s string) (err error) {
 	s = strings.ToLower(s)
-	if err := hasIllegalFilename(s); err != nil {
+	if err = hasIllegalFilename(s); err != nil {
 		return fmt.Errorf("Given project name %s has an illegal filename: %s", s, err)
 	}
-	os.Mkdir("."+string(filepath.Separator)+s, 0744)
+	err = os.Mkdir("."+string(filepath.Separator)+s, 0744)
+	if os.IsExist(err) {
+		return fmt.Errorf("A directory of that name already exists")
+	}
 	return nil
 }
 

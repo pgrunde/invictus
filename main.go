@@ -19,8 +19,7 @@ func main() {
 			Aliases: []string{"c"},
 			Usage:   "Create a template.",
 			Action: func(c *cli.Context) {
-				fmt.Println("getting arg", c.Args().First())
-				err := create.Project(c.Args().First())
+				err := create.NewProject(c.Args().First())
 				if err != nil {
 					fmt.Println(err)
 				}
