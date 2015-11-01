@@ -20,7 +20,17 @@ func NewProject(s string) (err error) {
 	if os.IsExist(err) {
 		return fmt.Errorf("A directory of that name already exists")
 	}
+	GenerateNew(s)
 	return nil
+}
+
+func GenerateNew(s string) {
+	attr := struct {
+		Arg string
+	}{
+		Arg: s,
+	}
+	mainTemplate.Execute(os.Stdout, attr)
 }
 
 func hasIllegalFilename(s string) error {
