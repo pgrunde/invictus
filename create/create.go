@@ -2,6 +2,8 @@ package create
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,6 +16,7 @@ func Project(s string) error {
 	if err := hasIllegalFilename(s); err != nil {
 		return fmt.Errorf("Given project name %s has an illegal filename: %s", s, err)
 	}
+	os.Mkdir("."+string(filepath.Separator)+s, 0744)
 	return nil
 }
 
@@ -26,7 +29,7 @@ func hasIllegalFilename(s string) error {
 	}
 	for _, bwn := range badWindowsNames {
 		if s == bwn {
-			return fmt.Errorf("Project name contains a reserved Windows operating system file name")
+			return fmt.Errorf("Given name contains a reserved Windows operating system file name")
 		}
 	}
 	for _, r := range badCharacters {
