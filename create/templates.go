@@ -4,8 +4,11 @@ import (
 	"text/template"
 )
 
-const mainTemplateText = `
-package main
+const mainTemplateText = `package main
+
+import (
+	"fmt"
+)
 
 func main() {
 	fmt.Println("{{.Arg}}")

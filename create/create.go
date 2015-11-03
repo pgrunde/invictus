@@ -2,6 +2,7 @@ package create
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -30,7 +31,13 @@ func GenerateNew(s string) {
 	}{
 		Arg: s,
 	}
-	mainTemplate.Execute(os.Stdout, attr)
+	// mainTemplate.Execute(os.Stdout, attr)
+	file, err := os.Create(s + "/main.go")
+	if err != nil {
+		log.Fatal("cannot create a file")
+	}
+	defer file.Close()
+	mainTemplate.Execute(file, attr)
 }
 
 func hasIllegalFilename(s string) error {
