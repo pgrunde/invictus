@@ -2,7 +2,6 @@ package create
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,7 +11,7 @@ var badWindowsNames = []string{"com1", "com2", "com3", "com4", "com5", "com6", "
 
 var badCharacters = []rune{'^', '/', '?', '<', '>', '\\', ':', '*', '|', '"', '.'}
 
-func NewProject(s string) (err error) {
+func NewProject(s, dbname string) (err error) {
 	s = strings.ToLower(s)
 	if err = hasIllegalFilename(s); err != nil {
 		return fmt.Errorf("Given project name %s has an illegal filename: %s", s, err)
@@ -21,23 +20,15 @@ func NewProject(s string) (err error) {
 	if os.IsExist(err) {
 		return fmt.Errorf("A directory of that name already exists")
 	}
-	GenerateNew(s)
+	GenerateNew(s, dbname)
 	return nil
 }
 
-func GenerateNew(s string) {
-	attr := struct {
-		Arg string
-	}{
-		Arg: s,
-	}
-	// mainTemplate.Execute(os.Stdout, attr)
-	file, err := os.Create(s + "/main.go")
-	if err != nil {
-		log.Fatal("cannot create a file")
-	}
-	defer file.Close()
-	mainTemplate.Execute(file, attr)
+// GenerateNew takes in a project name and creates a folder
+// with enclosing files
+func GenerateNew(s, dbname string) {
+	createMain(s)
+	createExampleSettings(s, dbname)
 }
 
 func hasIllegalFilename(s string) error {

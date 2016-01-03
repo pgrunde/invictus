@@ -9,17 +9,25 @@ import (
 )
 
 func main() {
+	var dbname string
 	app := cli.NewApp()
 	app.Name = "invictus"
 	app.Usage = "generate templates"
 	app.Version = "0.0.1"
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:        "dbname",
+			Usage:       "set the database name when creating a new project",
+			Destination: &dbname,
+		},
+	}
 	app.Commands = []cli.Command{
 		{
 			Name:    "create",
 			Aliases: []string{"c"},
 			Usage:   "Create a template.",
 			Action: func(c *cli.Context) {
-				err := create.NewProject(c.Args().First())
+				err := create.NewProject(c.Args().First(), dbname)
 				if err != nil {
 					fmt.Println(err)
 				}
