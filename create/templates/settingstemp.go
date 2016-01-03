@@ -1,4 +1,4 @@
-package create
+package templates
 
 import (
 	"log"
@@ -42,7 +42,10 @@ var exampleSettingsTemplate = template.Must(
 	template.New("examplesettings").Parse(exampleSettingsTemplateText),
 )
 
-func createExampleSettings(s, dbname string) {
+func CreateExampleSettings(s, dbname string) {
+	if dbname == "" {
+		dbname = s
+	}
 	attr := struct {
 		ProjectName string
 		DbName      string

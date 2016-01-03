@@ -1,4 +1,4 @@
-package create
+package templates
 
 import (
 	"log"
@@ -21,7 +21,7 @@ var mainTemplate = template.Must(
 	template.New("main").Parse(mainTemplateText),
 )
 
-func createMain(s string) {
+func CreateMain(s string) {
 	attr := struct {
 		ProjectName string
 	}{
