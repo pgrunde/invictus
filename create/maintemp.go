@@ -29,7 +29,7 @@ func createMain(s string) {
 	}
 	file, err := os.Create(s + "/main.go")
 	if err != nil {
-		log.Fatal("cannot create a file")
+		log.Fatal("cannot create a main.go file")
 	}
 	defer file.Close()
 	mainTemplate.Execute(file, attr)

@@ -52,7 +52,7 @@ func createExampleSettings(s, dbname string) {
 	}
 	file, err := os.Create(s + "/settings.example.json")
 	if err != nil {
-		log.Fatal("cannot create a file")
+		log.Fatal("cannot create a settings.example.json file")
 	}
 	defer file.Close()
 	exampleSettingsTemplate.Execute(file, attr)
