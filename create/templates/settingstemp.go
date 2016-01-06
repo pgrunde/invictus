@@ -6,7 +6,7 @@ import (
 	"text/template"
 )
 
-const exampleSettingsTemplateText = `{
+const settingsTemplateText = `{
     "domain": "localhost",
     "proxy_domain": "",
     "port": 3001,
@@ -38,11 +38,11 @@ const exampleSettingsTemplateText = `{
 }
 `
 
-var exampleSettingsTemplate = template.Must(
-	template.New("examplesettings").Parse(exampleSettingsTemplateText),
+var settingsTemplate = template.Must(
+	template.New("settings").Parse(settingsTemplateText),
 )
 
-func CreateExampleSettings(s, dbname string) {
+func CreateSettings(s, dbname string) {
 	if dbname == "" {
 		dbname = s
 	}
@@ -58,5 +58,12 @@ func CreateExampleSettings(s, dbname string) {
 		log.Fatal("cannot create a settings.example.json file")
 	}
 	defer file.Close()
-	exampleSettingsTemplate.Execute(file, attr)
+	settingsTemplate.Execute(file, attr)
+
+	file, err = os.Create(s + "/settings.json")
+	if err != nil {
+		log.Fatal("cannot create a settings.json file")
+	}
+	defer file.Close()
+	settingsTemplate.Execute(file, attr)
 }

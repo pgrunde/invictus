@@ -30,7 +30,7 @@ func NewProject(s, dbname string) (err error) {
 // with enclosing files
 func GenerateNew(s, dbname string) {
 	templates.CreateMain(s)
-	templates.CreateExampleSettings(s, dbname)
+	templates.CreateSettings(s, dbname)
 }
 
 func hasIllegalFilename(s string) error {
