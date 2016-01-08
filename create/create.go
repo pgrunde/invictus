@@ -2,6 +2,7 @@ package create
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -31,6 +32,13 @@ func NewProject(s, dbname string) (err error) {
 func GenerateNew(s, dbname string) {
 	templates.CreateMain(s)
 	templates.CreateSettings(s, dbname)
+
+	currentPath, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	templates.CreateServerFolder(s, currentPath)
+	templates.CreateServer(s, currentPath)
 }
 
 func hasIllegalFilename(s string) error {
