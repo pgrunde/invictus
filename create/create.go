@@ -33,12 +33,18 @@ func GenerateNew(s, dbname string) {
 	templates.CreateMain(s)
 	templates.CreateSettings(s, dbname)
 
-	currentPath, err := os.Getwd()
+	currentFullPath, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
-	templates.CreateServerFolder(s, currentPath)
-	templates.CreateServer(s, currentPath)
+	currentGoPath := buildGoPath(s, currentFullPath, os.Getenv("GOPATH"))
+	templates.CreateServerFolder(s, currentFullPath)
+	templates.CreateServer(s, currentFullPath, currentGoPath)
+}
+
+// bulidGoPath assumes that imports follow GOPATH + "/src"
+func buildGoPath(s, w, g string) string {
+	return w[len(g) + 5:] + "/" + s
 }
 
 func hasIllegalFilename(s string) error {

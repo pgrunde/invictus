@@ -62,13 +62,13 @@ func CreateServerFolder(s, path string) {
 	}
 }
 
-func CreateServer(s, path string) {
+func CreateServer(s, fullpath, gopath string) {
 	attr := struct {
 		ProjectInGopath string
 	}{
-		ProjectInGopath: path,
+		ProjectInGopath: gopath,
 	}
-	file, err := os.Create(fmt.Sprintf("%s/%s", path, s) + "/server/server.go")
+	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, s) + "/server/server.go")
 	if err != nil {
 		log.Fatal("cannot create a /server/server.go file")
 	}
