@@ -27,23 +27,26 @@ type Server struct {
 	Conn   sol.Conn
 }
 
-// ListenAndServe starts the server and serves forever
-func (server *Server) ListenAndServe() error {
-	log.Printf("server: serving on address %s\n", server.Config.Address())
-	return http.ListenAndServe(server.Config.Address(), nil)
-}
-
 // New creates a new Server
 func New(conf config.Config, conn sol.Conn) *Server {
 	API := api.New(conf, conn).SetPrefix(v1.Prefix)
 
-	API.Add(v1.Imgs(conn), "id")
-
-	http.Handle("/", http.RedirectHandler(v1.Prefix, 302))
+	// Controller Resources
+	// Example of how to add a controller resource from package v1
+	// API.Add(v1.Example(conn), "id")
 	http.Handle(v1.Prefix, API)
-	http.HandleFunc("/favicon.ico", favicon)
 
+	// Redirects root requests to api V1
+	http.Handle("/", http.RedirectHandler(v1.Prefix, 302))
+
+	http.HandleFunc("/favicon.ico", favicon)
 	return &Server{Config: conf, Conn: conn}
+}
+
+// ListenAndServe starts the server and serves forever
+func (server *Server) ListenAndServe() error {
+	log.Printf("server: serving on address %s\n", server.Config.Address())
+	return http.ListenAndServe(server.Config.Address(), nil)
 }
 
 func favicon(w http.ResponseWriter, r *http.Request) {
@@ -54,13 +57,6 @@ func favicon(w http.ResponseWriter, r *http.Request) {
 var serverTemplate = template.Must(
 	template.New("server").Parse(serverTemplateText),
 )
-
-func CreateServerFolder(s, path string) {
-	err := os.Mkdir(fmt.Sprintf("%s/%s/server", path, s), 0744)
-	if err != nil {
-		log.Fatal("cannot create a /server folder at path "+path+s)
-	}
-}
 
 func CreateServer(s, fullpath, gopath string) {
 	attr := struct {

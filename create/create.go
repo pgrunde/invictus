@@ -39,8 +39,11 @@ func GenerateNew(projectName, dbname string) {
 	templates.CreateMain(projectName, currentGoPath)
 	templates.CreateSettings(projectName, dbname)
 
-	templates.CreateServerFolder(projectName, currentFullPath)
+	createServerFolder(projectName, currentFullPath)
 	templates.CreateServer(projectName, currentFullPath, currentGoPath)
+
+	createApiFolder(projectName, currentFullPath)
+	createParamsFolder(projectName, currentFullPath)
 }
 
 // bulidGoPath assumes that imports follow GOPATH + "/src"
