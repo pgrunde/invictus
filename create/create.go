@@ -16,7 +16,7 @@ var badCharacters = []rune{'^', '/', '?', '<', '>', '\\', ':', '*', '|', '"', '.
 
 type CreateSettings struct {
 	ProjectName string
-	GoPath			string
+	GoPath      string
 	FullPath    string
 	DbName      string
 	DbUser      string

@@ -11,7 +11,7 @@ import (
 func main() {
 	var dbname string
 	var dbuser string
-	var dbpw   string
+	var dbpw string
 	app := cli.NewApp()
 	app.Name = "invictus"
 	app.Usage = "generate templates"
