@@ -13,7 +13,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/pgrunde/img/server"
+	"{{.ProjectInGopath}}/{{.ProjectName}}/server"
 
 	"github.com/aodin/sol"
 	_ "github.com/aodin/sol/postgres"
@@ -66,13 +66,13 @@ func Connect(file string) (config.Config, sol.Conn) {
 	// Parse the given configuration file
 	conf, err := config.ParseFile(file)
 	if err != nil {
-		log.Panicf("img: could not parse configuration: %s", err)
+		log.Panicf("{{.ProjectName}}: could not parse configuration: %s", err)
 	}
 
 	// Connect to the database
 	conn, err := sol.Open(conf.Database.Driver, conf.Database.Credentials())
 	if err != nil {
-		log.Panicf("img: could not connect to the database: %s", err)
+		log.Panicf("{{.ProjectName}}: could not connect to the database: %s", err)
 	}
 	return conf, conn
 }
@@ -82,13 +82,15 @@ var mainTemplate = template.Must(
 	template.New("main").Parse(mainTemplateText),
 )
 
-func CreateMain(s string) {
+func CreateMain(projectName, currentGoPath string) {
 	attr := struct {
 		ProjectName string
+		ProjectInGopath string
 	}{
-		ProjectName: s,
+		ProjectName: projectName,
+		ProjectInGopath: currentGoPath,
 	}
-	file, err := os.Create(s + "/main.go")
+	file, err := os.Create(projectName + "/main.go")
 	if err != nil {
 		log.Fatal("cannot create a main.go file")
 	}

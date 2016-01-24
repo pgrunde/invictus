@@ -29,17 +29,17 @@ func NewProject(s, dbname string) (err error) {
 
 // GenerateNew takes in a project name and creates a folder
 // with enclosing files
-func GenerateNew(s, dbname string) {
-	templates.CreateMain(s)
-	templates.CreateSettings(s, dbname)
-
+func GenerateNew(projectName, dbname string) {
 	currentFullPath, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
-	currentGoPath := buildGoPath(s, currentFullPath, os.Getenv("GOPATH"))
-	templates.CreateServerFolder(s, currentFullPath)
-	templates.CreateServer(s, currentFullPath, currentGoPath)
+	currentGoPath := buildGoPath(projectName, currentFullPath, os.Getenv("GOPATH"))
+
+	templates.CreateMain(projectName, currentGoPath)
+	templates.CreateSettings(projectName, dbname)
+	templates.CreateServerFolder(projectName, currentFullPath)
+	templates.CreateServer(projectName, currentFullPath, currentGoPath)
 }
 
 // bulidGoPath assumes that imports follow GOPATH + "/src"
