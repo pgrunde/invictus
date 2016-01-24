@@ -13,7 +13,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"{{.ProjectInGopath}}/{{.ProjectName}}/server"
+	"{{.ProjectInGopath}}/server"
 
 	"github.com/aodin/sol"
 	_ "github.com/aodin/sol/postgres"

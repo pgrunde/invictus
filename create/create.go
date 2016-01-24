@@ -38,6 +38,7 @@ func GenerateNew(projectName, dbname string) {
 
 	templates.CreateMain(projectName, currentGoPath)
 	templates.CreateSettings(projectName, dbname)
+
 	templates.CreateServerFolder(projectName, currentFullPath)
 	templates.CreateServer(projectName, currentFullPath, currentGoPath)
 }
