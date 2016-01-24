@@ -84,15 +84,15 @@ var mainTemplate = template.Must(
 
 func CreateMain(projectName, currentGoPath string) {
 	attr := struct {
-		ProjectName string
+		ProjectName     string
 		ProjectInGopath string
 	}{
-		ProjectName: projectName,
+		ProjectName:     projectName,
 		ProjectInGopath: currentGoPath,
 	}
 	file, err := os.Create(projectName + "/main.go")
 	if err != nil {
-		log.Fatal("cannot create a main.go file")
+		log.Fatalf("cannot create a main.go file: %s", err)
 	}
 	defer file.Close()
 	mainTemplate.Execute(file, attr)

@@ -20,22 +20,43 @@ var dbconfTemplate = template.Must(
 	template.New("dbconf").Parse(dbconfTemplateText),
 )
 
-func CreateDbConf(projectName, fullpath, dbname string) {
+func CreateDbConf(projectName, fullpath, dbname, pgusername, pgpassword string) {
 	attr := struct {
-		ProjectName string
-		DbName string
-		PostgresUser string
+		ProjectName      string
+		DbName           string
+		PostgresUser     string
 		PostgresPassword string
 	}{
-		ProjectName: projectName,
-		DbName: dbname,
-		PostgresUser: "peter",
-		PostgresPassword: "password",
+		ProjectName:      projectName,
+		DbName:           dbname,
+		PostgresUser:     "postgres",
+		PostgresPassword: "",
 	}
-	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, projectName) + "/db/dbconf.yml")
+	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, projectName) + "/db/dbconf.example.yml")
 	if err != nil {
 		log.Fatal("cannot create a dbconf.yml file")
 	}
 	defer file.Close()
 	dbconfTemplate.Execute(file, attr)
+
+	file, err = os.Create(fmt.Sprintf("%s/%s", fullpath, projectName) + "/db/dbconf.example.yml")
+	if err != nil {
+		log.Fatal("cannot create a dbconf.example.yml file")
+	}
+	defer file.Close()
+	dbconfTemplate.Execute(file, attr)
+
+	if pgusername != "" {
+		attr.PostgresUser = pgusername
+	}
+	if pgpassword != "" {
+		attr.PostgresPassword = pgpassword
+	}
+	file, err = os.Create(fmt.Sprintf("%s/%s", fullpath, projectName) + "/db/dbconf.yml")
+	if err != nil {
+		log.Fatal("cannot create a dbconf.yml file")
+	}
+	defer file.Close()
+	dbconfTemplate.Execute(file, attr)
+
 }

@@ -14,7 +14,31 @@ var badWindowsNames = []string{"com1", "com2", "com3", "com4", "com5", "com6", "
 
 var badCharacters = []rune{'^', '/', '?', '<', '>', '\\', ':', '*', '|', '"', '.'}
 
-func NewProject(s, dbname string) (err error) {
+type CreateSettings struct {
+	ProjectName string
+	GoPath			string
+	FullPath    string
+	DbName      string
+	DbUser      string
+	DbPassword  string
+}
+
+func NewCreateSettings(s, dbname, dbuser, dbpassword string) (settings CreateSettings) {
+	currentFullPath, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	gopath := buildGoPath(s, currentFullPath, os.Getenv("GOPATH"))
+	settings.ProjectName = s
+	settings.GoPath = gopath
+	settings.FullPath = currentFullPath
+	settings.DbName = dbname
+	settings.DbUser = dbuser
+	settings.DbPassword = dbpassword
+	return
+}
+
+func NewProject(s, dbname, dbuser, dbpassword string) (err error) {
 	s = strings.ToLower(s)
 	if err = hasIllegalFilename(s); err != nil {
 		return fmt.Errorf("Given project name %s has an illegal filename: %s", s, err)
@@ -23,32 +47,30 @@ func NewProject(s, dbname string) (err error) {
 	if os.IsExist(err) {
 		return fmt.Errorf("A directory of that name already exists")
 	}
-	GenerateNew(s, dbname)
+	settings := NewCreateSettings(s, dbname, dbuser, dbpassword)
+	GenerateNew(settings)
 	return nil
 }
 
-// GenerateNew takes in a project name and creates a folder
+// GenerateNew takes in a project and creates a folder
 // with enclosing files
-func GenerateNew(projectName, dbname string) {
-	currentFullPath, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
-	currentGoPath := buildGoPath(projectName, currentFullPath, os.Getenv("GOPATH"))
+func GenerateNew(s CreateSettings) {
+	templates.CreateMain(s.ProjectName, s.GoPath)
+	templates.CreateSettings(s.ProjectName, s.DbName)
 
-	templates.CreateMain(projectName, currentGoPath)
-	templates.CreateSettings(projectName, dbname)
+	createServerFolder(s.ProjectName, s.FullPath)
+	templates.CreateServer(s.ProjectName, s.FullPath, s.GoPath)
 
-	createServerFolder(projectName, currentFullPath)
-	templates.CreateServer(projectName, currentFullPath, currentGoPath)
+	createApiFolder(s.ProjectName, s.FullPath)
+	createParamsFolder(s.ProjectName, s.FullPath)
 
-	createApiFolder(projectName, currentFullPath)
-	createParamsFolder(projectName, currentFullPath)
+	createDbFolder(s.ProjectName, s.FullPath)
+	templates.CreateDbConf(s.ProjectName, s.FullPath, s.DbName, s.DbUser, s.DbPassword)
 }
 
 // bulidGoPath assumes that imports follow GOPATH + "/src"
 func buildGoPath(s, w, g string) string {
-	return w[len(g) + 5:] + "/" + s
+	return w[len(g)+5:] + "/" + s
 }
 
 func hasIllegalFilename(s string) error {
