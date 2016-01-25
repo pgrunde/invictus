@@ -62,7 +62,9 @@ func GenerateNew(s CreateSettings) {
 	templates.CreateServer(s.ProjectName, s.FullPath, s.GoPath)
 
 	createApiFolder(s.ProjectName, s.FullPath)
+
 	createParamsFolder(s.ProjectName, s.FullPath)
+	templates.CreateParams(s.ProjectName, s.FullPath)
 
 	createDbFolder(s.ProjectName, s.FullPath)
 	createMigrationsFolder(s.ProjectName, s.FullPath)
