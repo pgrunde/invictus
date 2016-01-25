@@ -65,6 +65,7 @@ func GenerateNew(s CreateSettings) {
 	createParamsFolder(s.ProjectName, s.FullPath)
 
 	createDbFolder(s.ProjectName, s.FullPath)
+	createMigrationsFolder(s.ProjectName, s.FullPath)
 	templates.CreateDbConf(s.ProjectName, s.FullPath, s.DbName, s.DbUser, s.DbPassword)
 	templates.CreateInit(s.ProjectName, s.FullPath)
 }
