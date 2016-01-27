@@ -21,7 +21,7 @@ var paramsTemplate = template.Must(
 )
 
 func CreateParams(projectName, fullpath string) {
-	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, projectName) + "/server/params/params.go")
+	file, err := os.Create(fmt.Sprintf("%s/%s/server/params/params.go", fullpath, projectName))
 	if err != nil {
 		log.Fatalf("cannot create a server/params/params.go file: %s", err)
 	}
