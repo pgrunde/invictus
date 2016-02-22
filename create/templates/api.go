@@ -39,7 +39,7 @@ type API struct {
 	resources map[string]Rest
 	endpoints Endpoints
 	routes    *node
-	conn      sol.Connection
+	conn      sol.Conn
 	config    config.Config
 }
 
@@ -89,14 +89,12 @@ func (api *API) Add(resource Rest, params ...string) error {
 
 	p := api.prefix
 	api.routes.addRoute(fmt.Sprintf("%s%s", p, name), resource)
-	api.routes.addRoute(fmt.Sprintf("%s%s/", p, name), resource)
 
 	var keys []string
 	for _, param := range params {
 		keys = append(keys, fmt.Sprintf(":%s", param))
 		pk := strings.Join(keys, "/")
 		api.routes.addRoute(fmt.Sprintf("%s%s/%s", p, name, pk), resource)
-		api.routes.addRoute(fmt.Sprintf("%s%s/%s/", p, name, pk), resource)
 	}
 
 	return nil
@@ -107,8 +105,6 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path == api.prefix {
 		response := Response{
-			Meta:    Meta{Limit: 250},
-			Links:   Links{"self": Link(api.RootURL())},
 			Results: api.endpoints,
 		}
 		encoding.Write(w, response)
@@ -118,11 +114,6 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	resource, params, _ := api.routes.getValue(r.URL.Path)
 	if resource == nil {
 		response := Response{
-			Meta: Meta{
-				Limit:  1,
-				Errors: MetaError(http.StatusNotFound, "Resource not found"),
-			},
-			Links:   Links{},
 			Results: make([]interface{}, 0),
 		}
 		encoding.Write(w, response)
@@ -165,12 +156,13 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	response.Meta.Errors = err
+	// response.Meta.Errors = err
+	response.Error = err
 	encoding.Write(w, response)
 	return
 }
 
-func New(conf config.Config, conn sol.Connection) *API {
+func New(conf config.Config, conn sol.Conn) *API {
 	return &API{
 		conn:      conn,
 		config:    conf,
