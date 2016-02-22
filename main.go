@@ -8,6 +8,8 @@ import (
 	"github.com/pgrunde/invictus/create"
 )
 
+// start shit
+
 func main() {
 	var dbname string
 	var dbuser string
