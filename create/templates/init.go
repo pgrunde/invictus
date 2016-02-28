@@ -15,8 +15,8 @@ import (
 )
 
 var (
-	// Models
-	// Example *sol.TableElem
+// Models
+// Example *sol.TableElem
 )
 
 func init() {

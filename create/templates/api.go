@@ -101,13 +101,11 @@ func (api *API) Add(resource Rest, params ...string) error {
 }
 
 func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	encoding := JSON{}
-
 	if r.URL.Path == api.prefix {
 		response := Response{
 			Results: api.endpoints,
 		}
-		encoding.Write(w, response)
+		Write(w, response)
 		return
 	}
 
@@ -116,7 +114,7 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		response := Response{
 			Results: make([]interface{}, 0),
 		}
-		encoding.Write(w, response)
+		Write(w, response)
 		return
 	}
 
@@ -130,7 +128,7 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if method == OPTIONS {
 		response := Empty()
 		response.Results = []Option{resource.Options()}
-		encoding.Write(w, response)
+		Write(w, response)
 		return
 	}
 
@@ -158,7 +156,7 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// response.Meta.Errors = err
 	response.Error = err
-	encoding.Write(w, response)
+	Write(w, response)
 	return
 }
 

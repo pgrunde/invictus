@@ -7,6 +7,19 @@ import (
 	"text/template"
 )
 
+var errorsTemplate = template.Must(
+	template.New("errors").Parse(errorsTemplateText),
+)
+
+func CreateErrors(projectName, fullpath string) {
+	file, err := os.Create(fmt.Sprintf("%s/%s/server/api/errors.go", fullpath, projectName))
+	if err != nil {
+		log.Fatalf("cannot create a server/api/errors.go file: %s", err)
+	}
+	defer file.Close()
+	errorsTemplate.Execute(file, nil)
+}
+
 const errorsTemplateText = `package api
 
 import "fmt"
@@ -37,16 +50,3 @@ func (e *Error) Exists() bool {
 	return len(e.Fields) != 0 || len(e.Meta) != 0
 }
 `
-
-var errorsTemplate = template.Must(
-	template.New("errors").Parse(errorsTemplateText),
-)
-
-func CreateErrors(projectName, fullpath string) {
-	file, err := os.Create(fmt.Sprintf("%s/%s/server/api/errors.go", fullpath, projectName))
-	if err != nil {
-		log.Fatalf("cannot create a server/api/errors.go file: %s", err)
-	}
-	defer file.Close()
-	errorsTemplate.Execute(file, nil)
-}
