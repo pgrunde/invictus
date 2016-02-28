@@ -123,9 +123,7 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var response Response
 	var err *Error
 
-	method := Method(r.Method)
-
-	if method == OPTIONS {
+	if r.Method == "OPTIONS" {
 		response := Empty()
 		response.Results = []Option{resource.Options()}
 		Write(w, response)
@@ -133,21 +131,21 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(params) == 0 {
-		switch method {
-		case GET:
+		switch r.Method {
+		case "GET":
 			response, err = resource.List(request)
-		case POST:
+		case "POST":
 			response, err = resource.Post(request)
 		default:
 			response, err = Unsupported(request)
 		}
 	} else {
-		switch method {
-		case GET:
+		switch r.Method {
+		case "GET":
 			response, err = resource.Get(request)
-		case PATCH:
+		case "PATCH":
 			response, err = resource.Patch(request)
-		case DELETE:
+		case "DELETE":
 			response, err = resource.Delete(request)
 		default:
 			response, err = Unsupported(request)
