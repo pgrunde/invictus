@@ -25,9 +25,9 @@ const errorsTemplateText = `package api
 import "fmt"
 
 type Error struct {
-	Code   int              `+"`json:\"-\"`"+`
-	Meta   []string         `+"`json:\"meta\"`"+`
-	Fields map[string]error `+"`json:\"fields\"`" +`
+	Code   int              ` + "`json:\"-\"`" + `
+	Meta   []string         ` + "`json:\"meta\"`" + `
+	Fields map[string]error ` + "`json:\"fields\"`" + `
 }
 
 func MetaError(code int, msg string, args ...interface{}) *Error {

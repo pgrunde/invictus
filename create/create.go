@@ -75,6 +75,7 @@ func GenerateNew(s CreateSettings) {
 	templates.CreateErrors(s.ProjectName, s.FullPath)
 	templates.CreateWrite(s.ProjectName, s.FullPath)
 	templates.CreateRequest(s.ProjectName, s.FullPath, s.GoPath)
+	templates.CreateResponse(s.ProjectName, s.FullPath)
 }
 
 // bulidGoPath assumes that imports follow GOPATH + "/src"
