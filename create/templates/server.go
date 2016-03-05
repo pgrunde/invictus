@@ -14,7 +14,6 @@ import (
 	"net/http"
 
 	"{{.ProjectInGopath}}/server/api"
-	"{{.ProjectInGopath}}/server/api/v1"
 
 	"github.com/aodin/sol"
 	"github.com/aodin/volta/config"

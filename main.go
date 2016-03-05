@@ -37,9 +37,9 @@ func main() {
 	}
 	app.Commands = []cli.Command{
 		{
-			Name:    "create",
-			Aliases: []string{"c"},
-			Usage:   "Create a template.",
+			Name:    "new",
+			Aliases: []string{"n"},
+			Usage:   "Generates a new http server",
 			Action: func(c *cli.Context) {
 				err := create.NewProject(c.Args().First(), dbname, dbuser, dbpw)
 				if err != nil {
