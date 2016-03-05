@@ -23,6 +23,20 @@ type CreateSettings struct {
 	DbPassword  string
 }
 
+func NewProject(s, dbname, dbuser, dbpassword string) (err error) {
+	s = strings.ToLower(s)
+	if err = hasIllegalFilename(s); err != nil {
+		return fmt.Errorf("Given project name %s has an illegal filename: %s", s, err)
+	}
+	err = os.Mkdir("."+string(filepath.Separator)+s, 0744)
+	if os.IsExist(err) {
+		return fmt.Errorf("A directory of that name already exists")
+	}
+	settings := NewCreateSettings(s, dbname, dbuser, dbpassword)
+	GenerateNew(settings)
+	return nil
+}
+
 func NewCreateSettings(s, dbname, dbuser, dbpassword string) (settings CreateSettings) {
 	currentFullPath, err := os.Getwd()
 	if err != nil {
@@ -36,20 +50,6 @@ func NewCreateSettings(s, dbname, dbuser, dbpassword string) (settings CreateSet
 	settings.DbUser = dbuser
 	settings.DbPassword = dbpassword
 	return
-}
-
-func NewProject(s, dbname, dbuser, dbpassword string) (err error) {
-	s = strings.ToLower(s)
-	if err = hasIllegalFilename(s); err != nil {
-		return fmt.Errorf("Given project name %s has an illegal filename: %s", s, err)
-	}
-	err = os.Mkdir("."+string(filepath.Separator)+s, 0744)
-	if os.IsExist(err) {
-		return fmt.Errorf("A directory of that name already exists")
-	}
-	settings := NewCreateSettings(s, dbname, dbuser, dbpassword)
-	GenerateNew(settings)
-	return nil
 }
 
 // GenerateNew takes in a project and creates a folder
@@ -70,12 +70,14 @@ func GenerateNew(s CreateSettings) {
 
 	createDbFolder(s.ProjectName, s.FullPath)
 	createMigrationsFolder(s.ProjectName, s.FullPath)
+
 	templates.CreateDbConf(s.ProjectName, s.FullPath, s.DbName, s.DbUser, s.DbPassword)
 	templates.CreateInit(s.ProjectName, s.FullPath)
 	templates.CreateErrors(s.ProjectName, s.FullPath)
 	templates.CreateWrite(s.ProjectName, s.FullPath)
 	templates.CreateRequest(s.ProjectName, s.FullPath, s.GoPath)
 	templates.CreateResponse(s.ProjectName, s.FullPath)
+	templates.CreateInterface(s.ProjectName, s.FullPath)
 }
 
 // bulidGoPath assumes that imports follow GOPATH + "/src"

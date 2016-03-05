@@ -11,17 +11,28 @@ import (
 
 func Test_NewProject(t *testing.T) {
 	var err error
-	err = NewProject("myproject")
+	err = NewProject("myproject", "", "", "")
 	require.Nil(t, err, "valid myproject call should not error")
 
-	err = NewProject("myproject")
+	err = NewProject("myproject", "", "", "")
 	require.NotNil(t, err, "attempting to create a project with an existing name should error")
 
-	err = NewProject("invalid:character")
+	err = NewProject("invalid:character", "", "", "")
 	require.NotNil(t, err, "attempting to create a project with an invalid name should error")
 
-	// clean up directory
 	os.RemoveAll("myproject")
+}
+
+func Test_NewCreateSettings(t *testing.T) {
+	var s = "myproject"
+	var dbname = "deebee"
+	var user = "user"
+	var pwd = "pwd"
+	settings := NewCreateSettings(s, dbname, user, pwd)
+	assert.Equal(t, settings.ProjectName, s)
+	assert.Equal(t, settings.DbName, dbname)
+	assert.Equal(t, settings.DbUser, user)
+	assert.Equal(t, settings.DbPassword, pwd)
 }
 
 func Test_hasIllegalFilename(t *testing.T) {

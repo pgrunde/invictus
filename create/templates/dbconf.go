@@ -34,18 +34,14 @@ func CreateDbConf(projectName, fullpath, dbname, pgusername, pgpassword string) 
 	}
 	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, projectName) + "/db/dbconf.example.yml")
 	if err != nil {
-		log.Fatal("cannot create a dbconf.yml file")
-	}
-	defer file.Close()
-	dbconfTemplate.Execute(file, attr)
-
-	file, err = os.Create(fmt.Sprintf("%s/%s", fullpath, projectName) + "/db/dbconf.example.yml")
-	if err != nil {
 		log.Fatal("cannot create a dbconf.example.yml file")
 	}
 	defer file.Close()
 	dbconfTemplate.Execute(file, attr)
 
+	if dbname == "" {
+		attr.DbName = projectName
+	}
 	if pgusername != "" {
 		attr.PostgresUser = pgusername
 	}
