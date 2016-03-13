@@ -61,17 +61,16 @@ func GenerateNew(s CreateSettings) {
 	createServerFolder(s.ProjectName, s.FullPath)
 	templates.CreateServer(s.ProjectName, s.FullPath, s.GoPath)
 
-	createApiFolder(s.ProjectName, s.FullPath)
-	templates.CreateAPI(s.ProjectName, s.FullPath)
-	templates.CreateEndpoint(s.ProjectName, s.FullPath)
-
 	createParamsFolder(s.ProjectName, s.FullPath)
 	templates.CreateParams(s.ProjectName, s.FullPath)
 
 	createDbFolder(s.ProjectName, s.FullPath)
 	createMigrationsFolder(s.ProjectName, s.FullPath)
-
 	templates.CreateDbConf(s.ProjectName, s.FullPath, s.DbName, s.DbUser, s.DbPassword)
+
+	createApiFolder(s.ProjectName, s.FullPath)
+	templates.CreateAPI(s.ProjectName, s.FullPath)
+	templates.CreateEndpoint(s.ProjectName, s.FullPath)
 	templates.CreateErrors(s.ProjectName, s.FullPath)
 	templates.CreateInit(s.ProjectName, s.FullPath)
 	templates.CreateInterface(s.ProjectName, s.FullPath)
@@ -81,6 +80,8 @@ func GenerateNew(s CreateSettings) {
 	templates.CreateResponse(s.ProjectName, s.FullPath)
 	templates.CreateTree(s.ProjectName, s.FullPath, s.GoPath)
 	templates.CreateWrite(s.ProjectName, s.FullPath)
+
+	createV1Folder(s.ProjectName, s.FullPath)
 }
 
 // bulidGoPath assumes that imports follow GOPATH + "/src"

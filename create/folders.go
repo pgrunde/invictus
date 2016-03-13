@@ -26,6 +26,10 @@ func createParamsFolder(s, path string) {
 	createFolder(s, path, "server/params")
 }
 
+func createV1Folder(s, path string) {
+	createFolder(s, path, "v1")
+}
+
 func createFolder(s, path, folder string) {
 	err := os.Mkdir(fmt.Sprintf("%s/%s/"+folder, path, s), 0744)
 	if err != nil {
