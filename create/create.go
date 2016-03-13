@@ -76,8 +76,10 @@ func GenerateNew(s CreateSettings) {
 	templates.CreateInit(s.ProjectName, s.FullPath)
 	templates.CreateInterface(s.ProjectName, s.FullPath)
 	templates.CreateOption(s.ProjectName, s.FullPath)
+	templates.CreateOptionMethod(s.ProjectName, s.FullPath)
 	templates.CreateRequest(s.ProjectName, s.FullPath, s.GoPath)
 	templates.CreateResponse(s.ProjectName, s.FullPath)
+	templates.CreateTree(s.ProjectName, s.FullPath, s.GoPath)
 	templates.CreateWrite(s.ProjectName, s.FullPath)
 }
 

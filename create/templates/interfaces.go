@@ -22,6 +22,11 @@ func CreateInterface(projectName, fullpath string) {
 
 const interfaceTemplateText = `package api
 
+import (
+	"net/http"
+	"net/url"
+)
+
 type Rest interface {
 	Name() string
 	List(*Request) (Response, *Error)
@@ -40,7 +45,7 @@ type APIer interface {
 	Link(string, ...url.Values) Link
 	RootURL() string
 	Add(Rest, ...string) error
-	Handle(http.ResponseWriter, *router.Request) error
+	Handle(http.ResponseWriter, *Request) error
 	ServeHTTP(http.ResponseWriter, *http.Request)
 }
 

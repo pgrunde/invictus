@@ -7,6 +7,24 @@ import (
 	"text/template"
 )
 
+var serverTemplate = template.Must(
+	template.New("server").Parse(serverTemplateText),
+)
+
+func CreateServer(s, fullpath, gopath string) {
+	attr := struct {
+		ProjectInGopath string
+	}{
+		ProjectInGopath: gopath,
+	}
+	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, s) + "/server/server.go")
+	if err != nil {
+		log.Fatal("cannot create a /server/server.go file")
+	}
+	defer file.Close()
+	serverTemplate.Execute(file, attr)
+}
+
 const serverTemplateText = `package server
 
 import (
@@ -52,21 +70,3 @@ func favicon(w http.ResponseWriter, r *http.Request) {
 	return
 }
 `
-
-var serverTemplate = template.Must(
-	template.New("server").Parse(serverTemplateText),
-)
-
-func CreateServer(s, fullpath, gopath string) {
-	attr := struct {
-		ProjectInGopath string
-	}{
-		ProjectInGopath: gopath,
-	}
-	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, s) + "/server/server.go")
-	if err != nil {
-		log.Fatal("cannot create a /server/server.go file")
-	}
-	defer file.Close()
-	serverTemplate.Execute(file, attr)
-}
