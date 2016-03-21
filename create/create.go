@@ -82,6 +82,7 @@ func GenerateNew(s CreateSettings) {
 	templates.CreateWrite(s.ProjectName, s.FullPath)
 
 	createV1Folder(s.ProjectName, s.FullPath)
+	templates.CreateV1(s.ProjectName, s.FullPath)
 }
 
 // bulidGoPath assumes that imports follow GOPATH + "/src"

@@ -32,6 +32,7 @@ import (
 	"net/http"
 
 	"{{.ProjectInGopath}}/server/api"
+	"{{.ProjectInGopath}}/v1"
 
 	"github.com/aodin/sol"
 	"github.com/aodin/volta/config"
