@@ -43,4 +43,10 @@ logs/
 *.swp
 *.swo
 *.swn
+*.swi
+*.swj
+*.swk
+*.swl
+*.swm
+*.swh
 .DS_Store

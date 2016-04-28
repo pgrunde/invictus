@@ -2,8 +2,6 @@ package templates
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"text/template"
 )
 
@@ -12,12 +10,8 @@ var endpointTemplate = template.Must(
 )
 
 func CreateEndpoint(projectName, fullpath string) {
-	file, err := os.Create(fmt.Sprintf("%s/%s/server/api/endpoint.go", fullpath, projectName))
-	if err != nil {
-		log.Fatalf("cannot create a server/api/endpoint.go file: %s", err)
-	}
-	defer file.Close()
-	endpointTemplate.Execute(file, nil)
+	path := fmt.Sprintf("%s/%s/server/api/endpoint.go", fullpath, projectName)
+	writeFile(endpointTemplate, path, nil)
 }
 
 var endpointTemplateText = `package api

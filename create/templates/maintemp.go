@@ -1,10 +1,25 @@
 package templates
 
 import (
-	"log"
-	"os"
+	"fmt"
 	"text/template"
 )
+
+var mainTemplate = template.Must(
+	template.New("main").Parse(mainTemplateText),
+)
+
+func CreateMain(projectName, currentGoPath string) {
+	attr := struct {
+		ProjectName     string
+		ProjectInGopath string
+	}{
+		ProjectName:     projectName,
+		ProjectInGopath: currentGoPath,
+	}
+	path := fmt.Sprintf("%s/main.go", projectName)
+	writeFile(mainTemplate, path, attr)
+}
 
 const mainTemplateText = `package main
 
@@ -37,23 +52,3 @@ func main() {
 	app.Run(os.Args)
 }
 `
-
-var mainTemplate = template.Must(
-	template.New("main").Parse(mainTemplateText),
-)
-
-func CreateMain(projectName, currentGoPath string) {
-	attr := struct {
-		ProjectName     string
-		ProjectInGopath string
-	}{
-		ProjectName:     projectName,
-		ProjectInGopath: currentGoPath,
-	}
-	file, err := os.Create(projectName + "/main.go")
-	if err != nil {
-		log.Fatalf("cannot create a main.go file: %s", err)
-	}
-	defer file.Close()
-	mainTemplate.Execute(file, attr)
-}

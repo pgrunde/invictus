@@ -2,8 +2,6 @@ package templates
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"text/template"
 )
 
@@ -12,12 +10,8 @@ var interfaceTemplate = template.Must(
 )
 
 func CreateInterface(projectName, fullpath string) {
-	file, err := os.Create(fmt.Sprintf("%s/%s/server/api/interface.go", fullpath, projectName))
-	if err != nil {
-		log.Fatalf("cannot create a server/api/interface.go file: %s", err)
-	}
-	defer file.Close()
-	interfaceTemplate.Execute(file, nil)
+	path := fmt.Sprintf("%s/%s/server/api/interface.go", fullpath, projectName)
+	writeFile(interfaceTemplate, path, nil)
 }
 
 const interfaceTemplateText = `package api

@@ -2,10 +2,17 @@ package templates
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"text/template"
 )
+
+var initTemplate = template.Must(
+	template.New("init").Parse(initTemplateText),
+)
+
+func CreateInit(projectName, fullpath string) {
+	path := fmt.Sprintf("%s/%s/db/init.go", fullpath, projectName)
+	writeFile(initTemplate, path, nil)
+}
 
 const initTemplateText = `package db
 
@@ -27,16 +34,3 @@ func init() {
 	// )
 }
 `
-
-var initTemplate = template.Must(
-	template.New("init").Parse(initTemplateText),
-)
-
-func CreateInit(projectName, fullpath string) {
-	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, projectName) + "/db/init.go")
-	if err != nil {
-		log.Fatalf("cannot create a init.go file: %s", err)
-	}
-	defer file.Close()
-	initTemplate.Execute(file, nil)
-}
