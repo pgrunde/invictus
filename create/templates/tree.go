@@ -2,8 +2,6 @@ package templates
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"text/template"
 )
 
@@ -17,12 +15,8 @@ func CreateTree(projectName, fullpath, gopath string) {
 	}{
 		ProjectInGopath: gopath,
 	}
-	file, err := os.Create(fmt.Sprintf("%s/%s/server/api/tree.go", fullpath, projectName))
-	if err != nil {
-		log.Fatalf("cannot create a server/api/tree.go file: %s", err)
-	}
-	defer file.Close()
-	treeTemplate.Execute(file, attr)
+	path := fmt.Sprintf("%s/%s/server/api/tree.go", fullpath, projectName)
+	writeFile(treeTemplate, path, attr)
 }
 
 const treeTemplateText = `// Copyright 2013 Julien Schmidt. All rights reserved.

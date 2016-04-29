@@ -2,8 +2,6 @@ package templates
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"text/template"
 )
 
@@ -11,18 +9,14 @@ var serverTemplate = template.Must(
 	template.New("server").Parse(serverTemplateText),
 )
 
-func CreateServer(s, fullpath, gopath string) {
+func CreateServer(projectName, fullpath, gopath string) {
 	attr := struct {
 		ProjectInGopath string
 	}{
 		ProjectInGopath: gopath,
 	}
-	file, err := os.Create(fmt.Sprintf("%s/%s", fullpath, s) + "/server/server.go")
-	if err != nil {
-		log.Fatal("cannot create a /server/server.go file")
-	}
-	defer file.Close()
-	serverTemplate.Execute(file, attr)
+	path := fmt.Sprintf("%s/%s/server/server.go", fullpath, projectName)
+	writeFile(serverTemplate, path, attr)
 }
 
 const serverTemplateText = `package server

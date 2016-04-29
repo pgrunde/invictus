@@ -1,10 +1,31 @@
 package templates
 
 import (
-	"log"
-	"os"
+	"fmt"
 	"text/template"
 )
+
+var settingsTemplate = template.Must(
+	template.New("settings").Parse(settingsTemplateText),
+)
+
+func CreateSettings(projectName, dbname string) {
+	if dbname == "" {
+		dbname = projectName
+	}
+	attr := struct {
+		ProjectName string
+		DbName      string
+	}{
+		ProjectName: projectName,
+		DbName:      dbname,
+	}
+	path := fmt.Sprintf("%s/settings.example.json", projectName)
+	writeFile(settingsTemplate, path, attr)
+
+	path = fmt.Sprintf("%s/settings.json", projectName)
+	writeFile(settingsTemplate, path, attr)
+}
 
 const settingsTemplateText = `{
     "domain": "localhost",
@@ -37,33 +58,3 @@ const settingsTemplateText = `{
     }
 }
 `
-
-var settingsTemplate = template.Must(
-	template.New("settings").Parse(settingsTemplateText),
-)
-
-func CreateSettings(s, dbname string) {
-	if dbname == "" {
-		dbname = s
-	}
-	attr := struct {
-		ProjectName string
-		DbName      string
-	}{
-		ProjectName: s,
-		DbName:      dbname,
-	}
-	file, err := os.Create(s + "/settings.example.json")
-	if err != nil {
-		log.Fatal("cannot create a settings.example.json file")
-	}
-	defer file.Close()
-	settingsTemplate.Execute(file, attr)
-
-	file, err = os.Create(s + "/settings.json")
-	if err != nil {
-		log.Fatal("cannot create a settings.json file")
-	}
-	defer file.Close()
-	settingsTemplate.Execute(file, attr)
-}

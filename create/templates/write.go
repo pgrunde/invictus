@@ -2,8 +2,6 @@ package templates
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"text/template"
 )
 
@@ -12,12 +10,8 @@ var writeTemplate = template.Must(
 )
 
 func CreateWrite(projectName, fullpath string) {
-	file, err := os.Create(fmt.Sprintf("%s/%s/server/api/write.go", fullpath, projectName))
-	if err != nil {
-		log.Fatalf("cannot create a server/api/errors.go file: %s", err)
-	}
-	defer file.Close()
-	writeTemplate.Execute(file, nil)
+	path := fmt.Sprintf("%s/%s/server/api/write.go", fullpath, projectName)
+	writeFile(writeTemplate, path, nil)
 }
 
 const writeTemplateText = `package api

@@ -2,8 +2,6 @@ package templates
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"text/template"
 )
 
@@ -12,12 +10,8 @@ var optionMethodTemplate = template.Must(
 )
 
 func CreateOptionMethod(projectName, fullpath string) {
-	file, err := os.Create(fmt.Sprintf("%s/%s/server/api/optionmethod.go", fullpath, projectName))
-	if err != nil {
-		log.Fatalf("cannot create a server/api/optionmethod.go file: %s", err)
-	}
-	defer file.Close()
-	optionMethodTemplate.Execute(file, nil)
+	path := fmt.Sprintf("%s/%s/server/api/optionmethod.go", fullpath, projectName)
+	writeFile(optionMethodTemplate, path, nil)
 }
 
 const optionMethodTemplateText = `package api
