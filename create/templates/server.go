@@ -27,8 +27,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"{{.ProjectInGopath}}/v1"
 	"{{.ProjectInGopath}}/server/api"
+	"{{.ProjectInGopath}}/v1"
 
 	"github.com/aodin/sol"
 	_ "github.com/aodin/sol/postgres"

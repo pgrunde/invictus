@@ -21,8 +21,8 @@ import (
 )
 
 type Response struct {
-	Error   *Error      ` + "`json:\"error,omitempty\"`" + `
-	Data 	interface{} ` + "`json:\"data\"`" + `
+	Error Error       ` + "`json:\"error,omitempty\"`" + `
+	Data  interface{} ` + "`json:\"data\"`" + `
 }
 
 func (r Response) IsEmpty() bool {
