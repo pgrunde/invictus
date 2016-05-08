@@ -21,13 +21,14 @@ import (
 	"net/url"
 )
 
+// Rest is the common interface for REST-ful resources
 type Rest interface {
 	Name() string
-	List(*Request) (Response, *Error)
-	Post(*Request) (Response, *Error)
-	Get(*Request) (Response, *Error)
-	Patch(*Request) (Response, *Error)
-	Delete(*Request) (Response, *Error)
+	List(w http.ResponseWriter, r *http.Request)
+	Post(w http.ResponseWriter, r *http.Request)
+	Get(w http.ResponseWriter, r *http.Request)
+	Patch(w http.ResponseWriter, r *http.Request)
+	Delete(w http.ResponseWriter, r *http.Request)
 	Options() Option
 	SetAPI(*API)
 	API() *API

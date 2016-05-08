@@ -95,9 +95,10 @@ func (api *API) Add(resource Rest, params ...string) error {
 }
 
 func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
 	if r.URL.Path == api.prefix {
 		response := Response{
-			Results: api.endpoints,
+			Data: api.endpoints,
 		}
 		Write(w, response)
 		return
@@ -106,20 +107,15 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	resource, params, _ := api.routes.getValue(r.URL.Path)
 	if resource == nil {
 		response := Response{
-			Results: make([]interface{}, 0),
+			Data: make([]interface{}, 0),
 		}
 		Write(w, response)
 		return
 	}
 
-	request := NewRequest(r, params...)
-
-	var response Response
-	var err *Error
-
 	if r.Method == "OPTIONS" {
 		response := Empty()
-		response.Results = []Option{resource.Options()}
+		response.Data = []Option{resource.Options()}
 		Write(w, response)
 		return
 	}
@@ -127,28 +123,24 @@ func (api *API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if len(params) == 0 {
 		switch r.Method {
 		case "GET":
-			response, err = resource.List(request)
+			resource.List(w, r)
 		case "POST":
-			response, err = resource.Post(request)
+			resource.Post(w, r)
 		default:
-			response, err = Unsupported(request)
+			Unsupported(w, r)
 		}
 	} else {
 		switch r.Method {
 		case "GET":
-			response, err = resource.Get(request)
+			resource.Get(w, r)
 		case "PATCH":
-			response, err = resource.Patch(request)
+			resource.Patch(w, r)
 		case "DELETE":
-			response, err = resource.Delete(request)
+			resource.Delete(w, r)
 		default:
-			response, err = Unsupported(request)
+			Unsupported(w, r)
 		}
 	}
-
-	// response.Meta.Errors = err
-	response.Error = err
-	Write(w, response)
 	return
 }
 

@@ -16,6 +16,10 @@ func CreateEndpoint(projectName, fullpath string) {
 
 var endpointTemplateText = `package api
 
+import (
+	"net/http"
+)
+
 type Endpoint struct {
 	name string
 	api  *API
@@ -33,24 +37,24 @@ func (c *Endpoint) SetAPI(api *API) {
 	c.api = api
 }
 
-func (c *Endpoint) List(r *Request) (Response, *Error) {
-	return Unsupported(r)
+func (c *Endpoint) List(w http.ResponseWriter, r *http.Request) {
+	Unsupported(w, r)
 }
 
-func (c *Endpoint) Post(r *Request) (Response, *Error) {
-	return Unsupported(r)
+func (c *Endpoint) Post(w http.ResponseWriter, r *http.Request) {
+	Unsupported(w, r)
 }
 
-func (c *Endpoint) Get(r *Request) (Response, *Error) {
-	return Unsupported(r)
+func (c *Endpoint) Get(w http.ResponseWriter, r *http.Request) {
+	Unsupported(w, r)
 }
 
-func (c *Endpoint) Patch(r *Request) (Response, *Error) {
-	return Unsupported(r)
+func (c *Endpoint) Patch(w http.ResponseWriter, r *http.Request) {
+	Unsupported(w, r)
 }
 
-func (c *Endpoint) Delete(r *Request) (Response, *Error) {
-	return Unsupported(r)
+func (c *Endpoint) Delete(w http.ResponseWriter, r *http.Request) {
+	Unsupported(w, r)
 }
 
 func (c *Endpoint) Options() Option {

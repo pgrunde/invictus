@@ -17,20 +17,19 @@ func CreateResponse(projectName, fullpath string) {
 const responseTemplateText = `package api
 
 import (
-	"fmt"
 	"net/http"
 )
 
 type Response struct {
 	Error   *Error      ` + "`json:\"error,omitempty\"`" + `
-	Results interface{} ` + "`json:\"results\"`" + `
+	Data 	interface{} ` + "`json:\"data\"`" + `
 }
 
 func (r Response) IsEmpty() bool {
-	if r.Results == nil {
+	if r.Data == nil {
 		return true
 	}
-	results, ok := r.Results.([]interface{})
+	results, ok := r.Data.([]interface{})
 	if !ok {
 		return false
 	}
@@ -40,23 +39,25 @@ func (r Response) IsEmpty() bool {
 	return false
 }
 
-func Respond(results interface{}) (r Response) {
-	r.Results = results
+func Respond(w http.ResponseWriter, results interface{}) {
+	var resp Response
+	resp.Data = results
+	Write(w, resp)
 	return
 }
 
 func Empty() Response {
 	return Response{
-		Results: make([]interface{}, 0),
+		Data: make([]interface{}, 0),
 	}
 }
 
-func Unsupported(r *Request) (Response, *Error) {
-	msg := fmt.Sprintf(
-		"The method %s is disabled for %s",
-		r.Request.Method,
-		r.Request.URL.Path,
-	)
-	return Empty(), MetaError(http.StatusMethodNotAllowed, msg)
+func Unsupported(w http.ResponseWriter, r *http.Request) {
+	response := Response{
+		Error: MetaError(404, "The method %s is disabled for %s", r.Method, r.URL.Path),
+		Data:  make([]interface{}, 0),
+	}
+	Write(w, response)
+	return
 }
 `
