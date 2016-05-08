@@ -40,16 +40,20 @@ func main() {
 			Name:    "new",
 			Aliases: []string{"n"},
 			Usage:   "Generates a new http server",
-			Action: func(c *cli.Context) {
+			Action: func(c *cli.Context) error {
 				err := create.NewProject(c.Args().First(), dbname, dbuser, dbpw)
 				if err != nil {
 					fmt.Println(err)
+					return err
 				}
+				fmt.Printf("Created new app '%s'\n", c.Args().First())
+				return nil
 			},
 		},
 	}
-	app.Action = func(c *cli.Context) {
+	app.Action = func(c *cli.Context) error {
 		cli.ShowAppHelp(c)
+		return nil
 	}
 	app.Run(os.Args)
 }
