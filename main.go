@@ -58,7 +58,8 @@ func main() {
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:        "folder",
-					Usage:       "Sets the destination folder. Defaults to 'v1/'.",
+					Value:       "v1",
+					Usage:       "Sets the destination folder",
 					Destination: &endpointFolder,
 				},
 			},

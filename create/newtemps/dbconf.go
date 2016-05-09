@@ -1,4 +1,4 @@
-package templates
+package newtemps
 
 import (
 	"fmt"
@@ -45,4 +45,3 @@ testing:
     driver: postgres
     open: host=localhost port=5432 dbname={{.DbName}}_test user={{.PostgresUser}} password={{.PostgresPassword}} sslmode=disable
 `
-

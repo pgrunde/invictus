@@ -1,4 +1,4 @@
-package templates
+package newtemps
 
 import (
 	"fmt"
@@ -21,20 +21,20 @@ type Link string
 type ParamType string
 
 type EndpointInfo struct {
-	About string `+"`json:\"about\"`"+`
-	Link  Link   `+"`json:\"url\"`"+`
+	About string ` + "`json:\"about\"`" + `
+	Link  Link   ` + "`json:\"url\"`" + `
 }
 
 type Endpoints map[string]EndpointInfo
 
 type Option struct {
 	EndpointInfo
-	List   OptionMethod `+"`json:\"list,omitempty\"`"+`
-	Get    OptionMethod `+"`json:\"get,omitempty\"`"+`
-	Post   OptionMethod `+"`json:\"post,omitempty\"`"+`
-	Put    OptionMethod `+"`json:\"put,omitempty\"`"+`
-	Patch  OptionMethod `+"`json:\"patch,omitempty\"`"+`
-	Delete OptionMethod `+"`json:\"delete,omitempty\"`"+`
+	List   OptionMethod ` + "`json:\"list,omitempty\"`" + `
+	Get    OptionMethod ` + "`json:\"get,omitempty\"`" + `
+	Post   OptionMethod ` + "`json:\"post,omitempty\"`" + `
+	Put    OptionMethod ` + "`json:\"put,omitempty\"`" + `
+	Patch  OptionMethod ` + "`json:\"patch,omitempty\"`" + `
+	Delete OptionMethod ` + "`json:\"delete,omitempty\"`" + `
 }
 
 func NewOption(link Link, about string) Option {

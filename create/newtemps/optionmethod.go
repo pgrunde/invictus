@@ -1,4 +1,4 @@
-package templates
+package newtemps
 
 import (
 	"fmt"
@@ -22,9 +22,9 @@ import (
 
 type OptionMethod struct {
 	Example
-	Supported   bool                   `+"`json:\"supported\"`"+`
-	Description string                 `+"`json:\"description,omitempty\"`"+`
-	Parameters  map[string]OptionParam `+"`json:\"parameters,omitempty\"`"+`
+	Supported   bool                   ` + "`json:\"supported\"`" + `
+	Description string                 ` + "`json:\"description,omitempty\"`" + `
+	Parameters  map[string]OptionParam ` + "`json:\"parameters,omitempty\"`" + `
 }
 
 func (o *OptionMethod) AddParam(name, dataType, description string) {
@@ -47,9 +47,9 @@ func (o *OptionMethod) AddParam(name, dataType, description string) {
 }
 
 type Example struct {
-	ExampleURL      Link        `+"`json:\"example_url,omitempty\"`"+`
-	ExampleBody     interface{} `+"`json:\"example_body,omitempty\"`"+`
-	ExampleResponse interface{} `+"`json:\"example_response,omitempty\"`"+`
+	ExampleURL      Link        ` + "`json:\"example_url,omitempty\"`" + `
+	ExampleBody     interface{} ` + "`json:\"example_body,omitempty\"`" + `
+	ExampleResponse interface{} ` + "`json:\"example_response,omitempty\"`" + `
 }
 
 func (e *Example) SetBody(body interface{}) {
@@ -63,8 +63,8 @@ func (e *Example) SetResponse(resp interface{}) {
 }
 
 type OptionParam struct {
-	Type        string `+"`json:\"type\"`"+` // indicates boolean, integer, string, etc
-	Description string `+"`json:\"description\"`"+`
-	ExampleURL  Link   `+"`json:\"example_url,omitempty\"`"+`
+	Type        string ` + "`json:\"type\"`" + ` // indicates boolean, integer, string, etc
+	Description string ` + "`json:\"description\"`" + `
+	ExampleURL  Link   ` + "`json:\"example_url,omitempty\"`" + `
 }
 `

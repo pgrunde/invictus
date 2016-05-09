@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/pgrunde/invictus/create/templates"
+	"github.com/pgrunde/invictus/create/newtemps"
 )
 
 var badWindowsNames = []string{"com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9", "lpt1", "lpt2", "lpt3", "lpt4", "lpt5", "lpt6", "lpt7", "lpt8", "lpt9", "con", "nul", "prn"}
@@ -55,34 +55,34 @@ func NewCreateSettings(s, dbname, dbuser, dbpassword string) (settings CreateSet
 // GenerateNew takes in a project and creates a folder
 // with enclosing files
 func GenerateNew(s CreateSettings) {
-	templates.CreateMain(s.ProjectName, s.GoPath)
-	templates.CreateSettings(s.ProjectName, s.DbName)
+	newtemps.CreateMain(s.ProjectName, s.GoPath)
+	newtemps.CreateSettings(s.ProjectName, s.DbName)
 
 	createServerFolder(s.ProjectName, s.FullPath)
-	templates.CreateServer(s.ProjectName, s.FullPath, s.GoPath)
+	newtemps.CreateServer(s.ProjectName, s.FullPath, s.GoPath)
 
 	createParamsFolder(s.ProjectName, s.FullPath)
-	templates.CreateParams(s.ProjectName, s.FullPath)
+	newtemps.CreateParams(s.ProjectName, s.FullPath)
 
 	createDbFolder(s.ProjectName, s.FullPath)
 	createMigrationsFolder(s.ProjectName, s.FullPath)
-	templates.CreateDbConf(s.ProjectName, s.FullPath, s.DbName, s.DbUser, s.DbPassword)
+	newtemps.CreateDbConf(s.ProjectName, s.FullPath, s.DbName, s.DbUser, s.DbPassword)
 
 	createApiFolder(s.ProjectName, s.FullPath)
-	templates.CreateAPI(s.ProjectName, s.FullPath)
-	templates.CreateEndpoint(s.ProjectName, s.FullPath)
-	templates.CreateErrors(s.ProjectName, s.FullPath)
-	templates.CreateInit(s.ProjectName, s.FullPath)
-	templates.CreateInterface(s.ProjectName, s.FullPath)
-	templates.CreateOption(s.ProjectName, s.FullPath)
-	templates.CreateOptionMethod(s.ProjectName, s.FullPath)
-	templates.CreateRequest(s.ProjectName, s.FullPath, s.GoPath)
-	templates.CreateResponse(s.ProjectName, s.FullPath)
-	templates.CreateTree(s.ProjectName, s.FullPath, s.GoPath)
-	templates.CreateWrite(s.ProjectName, s.FullPath)
+	newtemps.CreateAPI(s.ProjectName, s.FullPath)
+	newtemps.CreateEndpoint(s.ProjectName, s.FullPath)
+	newtemps.CreateErrors(s.ProjectName, s.FullPath)
+	newtemps.CreateInit(s.ProjectName, s.FullPath)
+	newtemps.CreateInterface(s.ProjectName, s.FullPath)
+	newtemps.CreateOption(s.ProjectName, s.FullPath)
+	newtemps.CreateOptionMethod(s.ProjectName, s.FullPath)
+	newtemps.CreateRequest(s.ProjectName, s.FullPath, s.GoPath)
+	newtemps.CreateResponse(s.ProjectName, s.FullPath)
+	newtemps.CreateTree(s.ProjectName, s.FullPath, s.GoPath)
+	newtemps.CreateWrite(s.ProjectName, s.FullPath)
 
 	createV1Folder(s.ProjectName, s.FullPath)
-	templates.CreateV1(s.ProjectName, s.FullPath)
+	newtemps.CreateV1(s.ProjectName, s.FullPath)
 }
 
 // bulidGoPath assumes that imports follow GOPATH + "/src"
