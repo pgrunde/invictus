@@ -14,6 +14,7 @@ func main() {
 	var dbname string
 	var dbuser string
 	var dbpw string
+	var endpointFolder string
 	app := cli.NewApp()
 	app.Name = "invictus"
 	app.Usage = "generate templates"
@@ -47,6 +48,27 @@ func main() {
 					return err
 				}
 				fmt.Printf("Created new app '%s'\n", c.Args().First())
+				return nil
+			},
+		},
+		{
+			Name:    "endpoint",
+			Aliases: []string{"e"},
+			Usage:   "Generates a new invictus endpoint",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:        "folder",
+					Usage:       "Sets the destination folder. Defaults to 'v1/'.",
+					Destination: &endpointFolder,
+				},
+			},
+			Action: func(c *cli.Context) error {
+				err := create.NewEndpoint(c.Args().First(), endpointFolder)
+				if err != nil {
+					fmt.Println(err)
+					return err
+				}
+				fmt.Printf("Created new endpoint '%s'\n", c.Args().First())
 				return nil
 			},
 		},
