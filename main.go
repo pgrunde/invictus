@@ -64,7 +64,7 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				err := create.NewEndpoint(c.Args().First(), endpointFolder)
+				err := create.NewEndpoint(c.Args().First(), c.Args()[1], endpointFolder)
 				if err != nil {
 					fmt.Println(err)
 					return err
