@@ -21,7 +21,7 @@ import (
 )
 
 type Response struct {
-	Error Error       ` + "`json:\"error,omitempty\"`" + `
+	Error *Error       ` + "`json:\"error,omitempty\"`" + `
 	Data  interface{} ` + "`json:\"data\"`" + `
 }
 
