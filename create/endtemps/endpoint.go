@@ -1,7 +1,6 @@
 package endtemps
 
 import (
-	"os"
 	"fmt"
 	"text/template"
 )
@@ -12,7 +11,7 @@ var endpointTemplate = template.Must(
 
 // CreateEndpoint builds a generic endpoint. It assumes that dirPath
 // ends with the name of of file to be written.
-func CreateEndpoint(projectName, fullpath, gopath, dirPath, packageName string) {
+func CreateEndpoint(fullpath, gopath, dirPath, packageName string) {
 	attr := struct {
 		PackageName string
 		ProjectInGopath string
@@ -21,9 +20,8 @@ func CreateEndpoint(projectName, fullpath, gopath, dirPath, packageName string) 
 		ProjectInGopath: gopath,
 	}
 	path := fmt.Sprintf("%s/%s", fullpath, dirPath)
-	fmt.Println(path)
-	//writeFile(endpointTemplate, path, attr)
-	endpointTemplate.Execute(os.Stdout, attr)
+	writeFile(endpointTemplate, path, attr)
+	//endpointTemplate.Execute(os.Stdout, attr)
 }
 
 var endpointTemplateText = `package {{.PackageName}}

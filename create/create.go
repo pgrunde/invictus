@@ -90,6 +90,12 @@ func buildGoPath(s, w, g string) string {
 	return w[len(g)+5:] + "/" + s
 }
 
+// bulidSettingsGoPath assumes that imports follow GOPATH + "/src"
+// it also assumes that the present working directory is the project directory
+func buildProjectGoPath(w, g string) string {
+	return w[len(g)+5:]
+}
+
 func hasIllegalFilename(s string) error {
 	if s == "" {
 		return fmt.Errorf("No project name given. Please specify a project name")

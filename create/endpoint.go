@@ -13,11 +13,9 @@ func NewEndpoint(projectName, name, dirPath string) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	gopath := buildGoPath(projectName, fullPath, os.Getenv("GOPATH"))
+	gopath := buildProjectGoPath(fullPath, os.Getenv("GOPATH"))
 	fmt.Println("gopath", gopath)
-	fmt.Println("fullPath", fullPath)
-	endtemps.CreateEndpoint(projectName,
-													fullPath,
+	endtemps.CreateEndpoint(fullPath,
 													gopath,
 													fmt.Sprintf("%s/%s.go", dirPath, name),
 													dirPath,
