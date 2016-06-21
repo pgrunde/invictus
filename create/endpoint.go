@@ -9,16 +9,18 @@ import (
 )
 
 func NewEndpoint(projectName, name, dirPath string) error {
-	currentFullPath, err := os.Getwd()
+	fullPath, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
-	gopath := buildGoPath(projectName, currentFullPath, os.Getenv("GOPATH"))
+	gopath := buildGoPath(projectName, fullPath, os.Getenv("GOPATH"))
+	fmt.Println("gopath", gopath)
+	fmt.Println("fullPath", fullPath)
 	endtemps.CreateEndpoint(projectName,
-													currentFullPath,
+													fullPath,
 													gopath,
 													fmt.Sprintf("%s/%s.go", dirPath, name),
-													name,
+													dirPath,
 												)
 	return nil
 }

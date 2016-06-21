@@ -1,6 +1,7 @@
 package endtemps
 
 import (
+	"os"
 	"fmt"
 	"text/template"
 )
@@ -19,8 +20,10 @@ func CreateEndpoint(projectName, fullpath, gopath, dirPath, packageName string) 
 		PackageName: packageName,
 		ProjectInGopath: gopath,
 	}
-	path := fmt.Sprintf("%s/%s/%s", fullpath, projectName, dirPath)
-	writeFile(endpointTemplate, path, attr)
+	path := fmt.Sprintf("%s/%s", fullpath, dirPath)
+	fmt.Println(path)
+	//writeFile(endpointTemplate, path, attr)
+	endpointTemplate.Execute(os.Stdout, attr)
 }
 
 var endpointTemplateText = `package {{.PackageName}}
